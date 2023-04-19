@@ -1,6 +1,9 @@
 const express= require('express');
 const app= express(); /*app es una instancia de express. */
+const cors=require('cors');
 const mysql=require('mysql');
+
+app.use(cors());
 
 /* Creamos la conexion */
 const conection=mysql.createConnection({
