@@ -2,8 +2,13 @@ const express= require('express');
 const app= express(); /*app es una instancia de express. */
 const cors=require('cors');
 const mysql=require('mysql');
+const bodyParser=require('body-parser');
 
 app.use(cors());
+
+// Configura body-parser como middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /* Creamos la conexion */
 const conection=mysql.createConnection({
@@ -39,6 +44,10 @@ app.get('/',(req,res)=>{
         res.send(JSON.stringify(resultado));
     });
 });
+app.post("/pagar",(req,res)=>{
+    console.log(req.body);
+    res.send(JSON.stringify({"resp":"ok"}));
+})
 
 
 /*3500 es el puerto en el que se va a levantar el servidor 
