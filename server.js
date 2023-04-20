@@ -45,10 +45,19 @@ app.get('/',(req,res)=>{
     });
 });
 app.post("/pagar",(req,res)=>{
-    console.log(req.body);
-    res.send(JSON.stringify({"resp":"ok"}));
-})
+    let total = 0;
+    req.body.carrito.map(p => total += p.cantidad * p.precio);
 
+    let consulta = `insert into tblventas (Fecha,Correo,Total,Status) 
+    values (now(),?,${total},'pendiente')`;
+    let statement = connection.query(consulta,[req.body.email], (err, result) => {
+        if (err) throw err;
+        console.log('Se insertaron ' + result.affectedRows + ' filas '+result.insertId );
+    })
+    console.log(req.body);
+
+    res.send(JSON.stringify({ "resp": "ok" }));
+})
 
 /*3500 es el puerto en el que se va a levantar el servidor 
 tengo que poner en la consola node .\server.js y me va a mostrar 
